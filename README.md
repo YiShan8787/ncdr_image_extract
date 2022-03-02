@@ -25,7 +25,16 @@
    6. Do dilation operation on the gray scale image
    7. Use the connectedcomponent to find the "max connected componet", then I called it "extract_front_image"
    8. Save the extract_front_image
-    
+
+# Config
+```
+   origin_path =  weather_image        # where you put the weather image files
+   destination_path =  extract_image   # where you hope to save the output images
+   suffix = _extract                   # the suffix of the output images
+   image_type = jpg                    # the image type of output images (recommend jpg or png)
+
+```
+
 # Source Code
 
   ## Requirement
