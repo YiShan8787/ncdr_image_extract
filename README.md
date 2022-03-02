@@ -40,5 +40,5 @@
   ## Requirement
   
     1. python
-    2. opencv
+    2. opencv-contrib-python     4.5.2.54  (important)
     3. numpy
