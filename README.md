@@ -3,13 +3,13 @@
 
 # How to use
 
- ## Windows
+ ## exe file (for windows)
  
     1. modify the config.ini file (optional)
     
     2. click "multi_image_extract.exe"
     
- ## Linux 
+ ## source code (recommend)
  
     1. modify the config.ini file (optional)
     
