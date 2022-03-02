@@ -115,7 +115,60 @@ for file in os.listdir(weather_path):
     #cv2.imshow('extract', extract_img)
     #cv2.waitKey()
     
+    #### draw the position
+    
+    contours,_ = cv2.findContours(biggest_component.copy().astype(np.uint8), 1, 1) # not copying here will throw an error
+    #contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL,
+    #    cv2.CHAIN_APPROX_SIMPLE)
+    rect = cv2.minAreaRect(contours[0]) # basically you can feed this rect into your classifier
+    (x,y),(w,h), a = rect # a - angle
+    
+    box = cv2.boxPoints(rect)
+    box = np.int0(box) #turn into ints
+    rect2 = cv2.drawContours(extract_img.copy(),[box],0,(0,0,255),5)
+    
+    x_list = np.transpose(box)[0]
+    y_list = np.transpose(box)[1]
+    
+    x_mid = (np.max(x_list) + np.min(x_list))/2
+    y_mid = (np.max(y_list) + np.min(y_list))/2
+    
+    text = '(' + str(x_mid) + ', ' + str(y_mid) + ')'
+    
+    cv2.putText(rect2, text, (int(x_mid), int(y_mid)), cv2.FONT_HERSHEY_TRIPLEX,
+      1, (0, 255, 255), 1, cv2.LINE_AA)
+    
+    #cv2.imshow('bounding', rect2)
+    cv2.waitKey()
+    #plt.imshow(rect2)
+    #plt.show()
+    
+    from numpy import interp
+    
+    lonRange = [90, 160] # flipped from descending to ascending
+    latRange = [10,60]
+    
+    # the range of y and x pixels
+    yRange = [0, rect2.shape[0]]
+    xRange = [0, rect2.shape[1]]
+    
+    xPixel = x_mid
+    yPixel = y_mid
+    
+    lat = latRange[1] - interp(yPixel, yRange, latRange) # flipped again
+    lon = interp(xPixel, xRange, lonRange)
+    
+    origin_cmp = cv2.drawContours(img.copy(),[box],0,(0,0,255),5)
+    
+    text2 = '(' + str(format(lon,'.2f')) + ', ' + str(format(lat,'.2f')) + ')'
+    
+    cv2.putText(extract_img, text2, (int(x_mid), int(y_mid)), cv2.FONT_HERSHEY_TRIPLEX,
+      1, (0, 255, 255), 1, cv2.LINE_AA)
+    
+    #cv2.imshow('origin_cmp', origin_cmp)
+    
     cv2.destroyAllWindows()
+    
     
     # 寫入圖檔
     out_path = extract_path + '\\' + file.split('.')[0] + suffix +'.' +image_type

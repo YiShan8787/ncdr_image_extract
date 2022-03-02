@@ -14,10 +14,11 @@ def undesired_objects (image):
     image = image.astype('uint8')
     nb_components, output, stats, centroids = cv2.connectedComponentsWithStats(image, connectivity=4)
     sizes = stats[:, -1]
-
+    
     max_label = 1
     max_size = sizes[1]
     for i in range(2, nb_components):
+        #print(sizes[i])
         if sizes[i] > max_size:
             max_label = i
             max_size = sizes[i]
@@ -32,7 +33,7 @@ def undesired_objects (image):
 #def find_mid(gray_image):
     
 
-path = "E:/tech/ncdr/ncdr_image_extract/weather_image/scc201606090000.jpg"
+path = "E:/tech/ncdr/ncdr_image_extract/weather_image/scc201606090600.jpg"
 
 # 讀取圖檔
 img = cv2.imread(path)
@@ -135,7 +136,7 @@ origin_cmp = cv2.drawContours(img.copy(),[box],0,(0,0,255),5)
 
 text2 = '(' + str(format(lon,'.2f')) + ', ' + str(format(lat,'.2f')) + ')'
 
-cv2.putText(origin_cmp, text2, (int(x_mid), int(y_mid)), cv2.FONT_HERSHEY_TRIPLEX,
+cv2.putText(extract_img, text2, (int(x_mid), int(y_mid)), cv2.FONT_HERSHEY_TRIPLEX,
   1, (0, 255, 255), 1, cv2.LINE_AA)
 
 cv2.imshow('origin_cmp', origin_cmp)
@@ -146,3 +147,5 @@ cv2.destroyAllWindows()
 # 寫入圖檔
 out_path = "extract.jpg"
 cv2.imwrite(out_path, extract_img)
+print("lon:",lon)
+print("lat",lat)
