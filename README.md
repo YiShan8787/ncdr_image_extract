@@ -32,6 +32,7 @@
    destination_path =  extract_image   # where you hope to save the output images
    suffix = _extract                   # the suffix of the output images
    image_type = jpg                    # the image type of output images (recommend jpg or png)
+   component_size = 700                # the component size we choose (if you want to choose shorter, make it small; Otherwise, make it bigger)
 
 ```
 
