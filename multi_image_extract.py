@@ -13,6 +13,7 @@ extract_path = config['main']['destination_path']
 suffix = config['main']['suffix']
 image_type = config['main']['image_type']
 component_size = int(config['main']['component_size'])
+txt_file_suffix = config['main']['txt_file_suffix']
 
 import os
 
@@ -127,6 +128,7 @@ for file in os.listdir(weather_path):
     contours,_ = cv2.findContours(biggest_component.copy().astype(np.uint8), 1, 1) # not copying here will throw an error
     #contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL,
     #    cv2.CHAIN_APPROX_SIMPLE)
+    f = open(extract_path+ '\\' + file.split('.')[0] +txt_file_suffix + '.txt','w')
     for contour in contours:
         rect = cv2.minAreaRect(contour) # basically you can feed this rect into your classifier
         (x,y),(w,h), a = rect # a - angle
@@ -169,7 +171,7 @@ for file in os.listdir(weather_path):
         origin_cmp = cv2.drawContours(img.copy(),[box],0,(0,0,255),5)
         
         text2 = '(' + str(format(lon,'.2f')) + ', ' + str(format(lat,'.2f')) + ')'
-        
+        f.write(text2 + '\n')
         cv2.putText(extract_img, text2, (int(x_mid), int(y_mid)), cv2.FONT_HERSHEY_TRIPLEX,
           0.5, (0, 255, 255), 1, cv2.LINE_AA)
         
@@ -180,5 +182,6 @@ for file in os.listdir(weather_path):
     
     # 寫入圖檔
     out_path = extract_path + '\\' + file.split('.')[0] + suffix +'.' +image_type
+    f.close()
     print(out_path)
     cv2.imwrite(out_path, extract_img)

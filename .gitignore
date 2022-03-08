@@ -1,3 +1,6 @@
 /weather_image
 *.jpg
 *.exe
+*.txt
+.exe
+*.ex*
